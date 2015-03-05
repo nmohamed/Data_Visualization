@@ -175,8 +175,6 @@ def distance_from_passwords(your_word, passwords):
 def get_year(password):
     """Sees if there's a year in your password, and tells you how common it is
         to have that year in a password"""
-
-    #nums = filter(str.isdigit, password)
     numbs = map(int, re.findall('\d+', password))
 
     for num in numbs:
@@ -196,6 +194,18 @@ def graph_distances(dis_pass):
     #plt.show()
     plt.savefig("distancefrompass.png")  
 
+def tenmill_year():
+    """For making graph of password years thatre most common"""
+    passes = total_password_list()
+    years = {}
+    for password in passes:
+        numbs = map(int, re.findall('\d+', password))
+        for num in numbs:
+            if num > 1900 and num < 2020:
+                years[num] = years.get(num, 0) + 1
+    print years
+
+
 if __name__ == '__main__':
     pass_dict = get_word_list("10-million-combos.txt")
     english = english_words()
@@ -211,4 +221,7 @@ if __name__ == '__main__':
     eng_dis = distance_from_words("hello", english)
     pass_dis = distance_from_passwords("hello", total_passwords)
     graph_distances(pass_dis)
+    #distance_from_words("hello", english)
+    #distance_from_passwords("hello", total_passwords)
     # print english
+    tenmill_year()
