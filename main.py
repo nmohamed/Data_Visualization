@@ -6,7 +6,7 @@ Software Design SP2015
 
 from Tkinter import *
 from PIL import Image, ImageTk
-from datafunctions import english_words, compare_to_english
+from datafunctions import english_words, compare_to_english, get_year
 
 class MakeWindow(Frame):
   
@@ -28,10 +28,13 @@ class MakeWindow(Frame):
 
     def add_entry(self):
         def get_info():
+            """Get password info for password you Input
+                """
             password = entry.get()
             english = english_words()
             Label(text = 'Your password: ' + password).pack()
             Label(text = compare_to_english(password, english)).pack()
+            Label(text = get_year(password)).pack()
 
         Label(text = "Input Password:").pack()
         entry = Entry()

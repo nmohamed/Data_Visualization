@@ -5,6 +5,7 @@ import operator
 import numpy as np
 import matplotlib.pyplot as plt
 from Levenshtein import distance
+import re
 
 
 def english_words():
@@ -121,8 +122,7 @@ def compare_to_english(password, english):
     if matching == []:
         return "Does not contain English"
     else:
-        return matching
-
+        return 'Contains following English: ' + str(matching)
 
 def frequency(pass_dict, matching):
     freq = []
@@ -171,6 +171,18 @@ def distance_from_passwords(your_word, passwords):
         if dis < 10:
             distance[dis] += 1
     print distance
+
+def get_year(password):
+    """Sees if there's a year in your password, and tells you how common it is
+        to have that year in a password"""
+
+    #nums = filter(str.isdigit, password)
+    numbs = map(int, re.findall('\d+', password))
+
+    for num in numbs:
+        if num > 1900 and num < 2020:
+            return "Year included is " + str(num)
+    return "No year present"
 
 if __name__ == '__main__':
     pass_dict = get_word_list("10-million-combos.txt")
