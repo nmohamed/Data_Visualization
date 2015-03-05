@@ -75,7 +75,7 @@ def graph_percents(top_words, percents, top_values):
     plt.title('Percent Apperance of Common Passwords')
 
     #plt.show()
-    plt.savefig("percentsofcommon.png")
+    plt.savefig("percentsofcommon.gif")
 
 
 counts = get_word_list("10-million-combos.txt")
