@@ -36,6 +36,10 @@ def get_word_list(file_name):
             count[words_in_line[1]] += 1        
     return count
 
+def passwords_as_list(pass_dict):
+    pass_list = pass_dict.items()
+    
+
 def num_passwords(file_name):
     """ returns number of passwords"""
     f = open(file_name,'r')
