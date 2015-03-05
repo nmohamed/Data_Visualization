@@ -122,9 +122,12 @@ def find_distance(s1, s2):
 
 
 def distance_from_words(your_word, english_words):
-    distance = [0, 0, 0, 0, 0]
+    distance = [0]*10
     for word in english_words:
         dis = find_distance(your_word, word)
+        if dis < 10:
+            distance[dis] += 1
+    print distance
         
 
 
@@ -137,7 +140,7 @@ if __name__ == '__main__':
     # percents = get_percent(num_passwords, top_values)
     #english = compare_to_english('hello', english)
     #freq_list = frequency(pass_dict, english)
-    print freq_list
+    #print freq_list
     #find_distance("hello", "jello")
     distance_from_words("hello", english)
     # print english
