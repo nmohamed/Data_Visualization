@@ -122,10 +122,10 @@ def find_distance(s1, s2):
 
 
 def distance_from_words(your_word, english_words):
-	
+	distance = [0, 0, 0, 0, 0]
 	for word in english_words:
 		dis = find_distance(your_word, word)
-		if dis <  5
+		
 
 
 if __name__ == '__main__':
