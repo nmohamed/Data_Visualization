@@ -1,7 +1,7 @@
 from swampy.Gui import *
 from Tkinter import *
 import PIL
-from PIL import Image, ImageTK
+from PIL import Image#, ImageTK
 import string
 
 
