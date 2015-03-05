@@ -154,7 +154,7 @@ def distance_from_words(your_word, english_words):
         dis = find_distance(your_word, word)
         if dis < 10:
             distance[dis] += 1
-    print distance
+    return distance
         
 
 def distance_from_passwords(your_word, passwords):
@@ -170,7 +170,7 @@ def distance_from_passwords(your_word, passwords):
         dis = find_distance(your_word, word)
         if dis < 10:
             distance[dis] += 1
-    print distance
+    return distance
 
 def get_year(password):
     """Sees if there's a year in your password, and tells you how common it is
@@ -184,6 +184,18 @@ def get_year(password):
             return "Year included is " + str(num)
     return "No year present"
 
+def graph_distances(dis_pass):
+    print dis_pass
+    numbers = range(0,10)
+    y_pos = np.arange(len(dis_pass))
+    plt.barh(y_pos, dis_pass)
+    plt.yticks(y_pos, numbers)
+    plt.xlabel('Number of Occurances')
+    plt.title('Number of Occurances by Distance from Word')
+
+    #plt.show()
+    plt.savefig("distancefrompass.png")  
+
 if __name__ == '__main__':
     pass_dict = get_word_list("10-million-combos.txt")
     english = english_words()
@@ -196,6 +208,7 @@ if __name__ == '__main__':
     #freq_list = frequency(pass_dict, english)
     #print freq_list
     #find_distance("hello", "jello")
-    distance_from_words("hello", english)
-    distance_from_passwords("hello", total_passwords)
+    eng_dis = distance_from_words("hello", english)
+    pass_dis = distance_from_passwords("hello", total_passwords)
+    graph_distances(pass_dis)
     # print english
