@@ -4,6 +4,18 @@ import operator
 #import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 #import matplotlib.pyplot as plt
+from Levenshtein import distance
+
+
+def english_words():
+	f = open('/usr/share/dict/american-english', 'r')
+    words = f.readlines()
+    english = []
+
+    for line in words:
+        english.append(line.translate(None, '\n'))
+
+    return english
 
 def get_word_list(file_name):
     """ Creates a dictionary of passwords and their counts.
@@ -78,25 +90,20 @@ def get_percent(num_passwords, top_values):
 #     plt.savefig("percentsofcommon.gif")
 
 
-def compare_to_english(password):
+def compare_to_english(password, english):
     """ Compare input password to english words and see if password is english words
         or if it contains one
         Returns string stating "Not English" or "Contains English"
         >>> compare_to_english('friend')
         'Contains English'
     """
-    f = open('/usr/share/dict/american-english', 'r')
-    words = f.readlines()
-    english = []
-
-    for line in words:
-        english.append(line.translate(None, '\n'))
 
     matching = [word for word in english if word in password and len(word) > 2]
     if matching == []:
         return "Does not contain English"
     else:
         return matching
+
 
 def frequency(pass_dict, matching):
     freq = []
@@ -108,13 +115,29 @@ def frequency(pass_dict, matching):
     freq = zip(matching, freq)
     return freq
 
+
+def find_distance(s1, s2):
+	dis = distance(s1, s2)
+	return dis
+
+
+def distance_from_words(your_word, english_words):
+	
+	for word in english_words:
+		dis = find_distance(your_word, word)
+		if dis <  5
+
+
 if __name__ == '__main__':
-    # pass_dict = get_word_list("10-million-combos.txt")
+    pass_dict = get_word_list("10-million-combos.txt")
+    english = english_words()
     # top_values =  get_top_n_values(pass_dict, 25)
     # num_passwords = num_passwords("10-million-combos.txt")
     # top_words = get_top_n_words(pass_dict, 25)
     # percents = get_percent(num_passwords, top_values)
-    # english = compare_to_english('hello')
-    # freq_list = frequency(pass_dict, english)
-    # print freq_list
+    #english = compare_to_english('hello', english)
+    #freq_list = frequency(pass_dict, english)
+    print freq_list
+    #find_distance("hello", "jello")
+    distance_from_words("hello", english)
     # print english
