@@ -52,7 +52,6 @@ def get_top_n_words(word_list, n):
     sort = sorted(word_list, key = word_list.get, reverse = True)
     return sort[:n]
 
-<<<<<<< HEAD
 def get_top_n_values(word_list, n):
     top_words = dict(sorted(word_list.iteritems(), key=operator.itemgetter(1), reverse=True)[:n])
     top_values = top_words.values()
@@ -87,7 +86,7 @@ top_words = get_top_n_words(counts, 25)
 #print top_words
 percents = get_percent(num_passwords, top_values)
 graph_percents(top_words, percents, top_values)
-=======
+
 def compare_to_english(password):
     """ Compare input password to english words and see if password is english words
         or if it contains one
@@ -118,6 +117,6 @@ if __name__ == '__main__':
     counts = get_word_list('test_data.txt')
     top_pw = get_top_n_words(counts, 10)
     english = compare_to_english('qwrt')
-    print english
+    #print english
     #most common words, is it english
->>>>>>> 39d948d1ec421aa1096986c2df57a23dbc0d2c0c
+

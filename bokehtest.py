@@ -1,8 +1,7 @@
 from swampy.Gui import *
 from Tkinter import *
-import matplotlib.pyplot as plt
 import PIL
-from PIL import Image#, ImageTK
+from PIL import Image, ImageTK
 import string
 
 
@@ -70,8 +69,8 @@ def common_passwords_percents():
     #   print color
 window = MakeWindow()
 #window.setup()
-window.add_button("Test", show_photo)
-#window.add_button("Test", MakeWindow.text_entry(window))
+#window.add_button("Test", show_photo)
+window.add_button("Test", MakeWindow.text_entry(window))
 
 
 
