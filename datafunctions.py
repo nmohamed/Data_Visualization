@@ -8,7 +8,7 @@ from Levenshtein import distance
 
 
 def english_words():
-	f = open('/usr/share/dict/american-english', 'r')
+    f = open('/usr/share/dict/american-english', 'r')
     words = f.readlines()
     english = []
 
@@ -117,15 +117,15 @@ def frequency(pass_dict, matching):
 
 
 def find_distance(s1, s2):
-	dis = distance(s1, s2)
-	return dis
+    dis = distance(s1, s2)
+    return dis
 
 
 def distance_from_words(your_word, english_words):
-	distance = [0, 0, 0, 0, 0]
-	for word in english_words:
-		dis = find_distance(your_word, word)
-		
+    distance = [0, 0, 0, 0, 0]
+    for word in english_words:
+        dis = find_distance(your_word, word)
+        
 
 
 if __name__ == '__main__':
