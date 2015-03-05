@@ -37,6 +37,7 @@ def num_passwords(file_name):
             pass
         else:
             words.append(words_in_line[1])
+    print len(words)
     return len(words)
 
 
@@ -114,9 +115,9 @@ def compare_to_english(password):
 
 
 if __name__ == '__main__':
-    counts = get_word_list('test_data.txt')
+    counts = get_word_list('10-million-combos.txt')
     top_pw = get_top_n_words(counts, 10)
-    english = compare_to_english('qwrt')
+    #english = compare_to_english('qwrt')
     #print english
     #most common words, is it english
 
