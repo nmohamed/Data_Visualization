@@ -37,11 +37,27 @@ def get_word_list(file_name):
             count[words_in_line[1]] += 1        
     return count
 
+
+def occurances_of_words_in_pass(words_in_pass, pass_dict):
+    """ Takes a list of words contained in the passwords and returns a list of tuples
+        words_in_pass: list of strings
+        returns: list of tuples
+     """
+    word_and_occurances = []
+    for word in words_in_pass:
+        if word in pass_dict:
+            word_and_occurances.append((word, pass_dict[word]))
+        else:
+            word_and_occurances.append((word, 0))
+    return word_and_occurances
+
+
 def passwords_as_list(pass_dict):
     """ Turns dictionary of passwords keys to a list 
     returns a list of passwords"""
     pass_list = list(pass_dict.keys())
     return pass_list
+
 
 def total_password_list():
     """ return the dictionary as a list where every password is its own entry"""
@@ -55,6 +71,7 @@ def total_password_list():
         else:
             total_pass_list.append(words_in_line[1])
     return total_pass_list    
+
 
 def num_passwords(file_name):
     """ returns number of passwords"""
@@ -124,6 +141,7 @@ def compare_to_english(password, english):
     else:
         return 'Contains following English: ' + str(matching)
 
+
 def frequency(pass_dict, matching):
     freq = []
     for word in matching:
@@ -172,6 +190,7 @@ def distance_from_passwords(your_word, passwords):
             distance[dis] += 1
     return distance
 
+
 def get_year(password):
     """Sees if there's a year in your password, and tells you how common it is
         to have that year in a password"""
@@ -182,17 +201,17 @@ def get_year(password):
             return "Year included is " + str(num)
     return "No year present"
 
+
 def graph_distances(dis_pass):
-    print dis_pass
+    #print dis_pass
     numbers = range(0,10)
     y_pos = np.arange(len(dis_pass))
     plt.barh(y_pos, dis_pass)
     plt.yticks(y_pos, numbers)
     plt.xlabel('Number of Occurances')
     plt.title('Number of Occurances by Distance from Word')
-
-    #plt.show()
     plt.savefig("distancefrompass.png")  
+
 
 def tenmill_year():
     """For making graph of password years thatre most common"""
@@ -204,6 +223,7 @@ def tenmill_year():
             if num > 1900 and num < 2020:
                 years[num] = years.get(num, 0) + 1
     print years
+
 
 if __name__ == '__main__':
     pass_dict = get_word_list("10-million-combos.txt")
@@ -217,10 +237,11 @@ if __name__ == '__main__':
     #freq_list = frequency(pass_dict, english)
     #print freq_list
     #find_distance("hello", "jello")
+    #occurances_of_words_in_pass(['hello', 'ell', 'hell'], pass_dict)
     eng_dis = distance_from_words("hello", english)
     pass_dis = distance_from_passwords("hello", total_passwords)
     graph_distances(pass_dis)
     #distance_from_words("hello", english)
     #distance_from_passwords("hello", total_passwords)
     # print english
-    tenmill_year()
+    #tenmill_year()
