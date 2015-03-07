@@ -6,7 +6,7 @@ Software Design SP2015
 
 from Tkinter import *
 from PIL import Image, ImageTk
-from datafunctions import english_words, compare_to_english, get_year
+from datafunctions import english_words, compare_to_english, get_year, distance_from_passwords, graph_distances, total_password_list
 
 class MakeWindow(Frame):
   
@@ -42,6 +42,10 @@ class MakeWindow(Frame):
             Label(self.information_frame, text = 'Your password: ' + password).pack()
             Label(self.information_frame, text = compare_to_english(password, english)).pack()
             Label(self.information_frame, text = get_year(password)).pack()
+            password_list = total_password_list()
+            distances = distance_from_passwords(password, password_list)
+            graph_distances(distances)
+            MakeWindow.add_distancesimage(self)
 
         Label(self.button_frame, text = "Input Password:").pack()
         entry = Entry(self.button_frame)
@@ -56,6 +60,14 @@ class MakeWindow(Frame):
         label = Label(image = photo)
         label.image = photo #keep a reference!
         label.pack()
+
+    def add_distancesimage(self):
+        image = Image.open('distancefrompass.png')
+        photo = ImageTk.PhotoImage(image)
+        label = Label(image = photo)
+        label.image = photo #keep a reference!
+        label.pack()
+
 
 def main():
     root = Tk()
