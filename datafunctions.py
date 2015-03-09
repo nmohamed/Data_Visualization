@@ -59,9 +59,9 @@ def passwords_as_list(pass_dict):
     return pass_list
 
 
-def total_password_list():
+def total_password_list(file_name):
     """ return the dictionary as a list where every password is its own entry"""
-    f = open("10-million-combos.txt", 'r')
+    f = open(file_name, 'r')
     total_pass_list = []
     lines = f.readlines()
     for line  in lines:
@@ -179,7 +179,7 @@ def distance_from_passwords(your_word, passwords):
     """ 
     your_word: string that is your password
     passwordsr: list of passwords, all dublicates included 
-    Uses Levenshtein distance to find the number of charecters off a password
+    Uses Levenshtein distance to find the number of characters off a password
     is from passwords and returns a list where 0 is the number of words that are 0
     off, distance[1] is words that are 1 of etc
     returns list """ 
@@ -189,6 +189,21 @@ def distance_from_passwords(your_word, passwords):
         if dis < 10:
             distance[dis] += 1
     return distance
+
+def distance_from_passwords_dictionary(your_word, passwords):
+    """ 
+    your_word: string that is your password
+    passwords: list of passwords, all dublicates included 
+    Uses Levenshtein distance to find the number of characters off a password
+    is from passwords and returns a dictionary where keys are passworeds and values = dist
+    returns:dictionary""" 
+    dist = {}
+    for word in passwords:
+        if word in dist:
+            pass
+        else:
+            dist[word] = distance(your_word, word)
+    return dist
 
 
 def get_year(password):
@@ -226,9 +241,9 @@ def tenmill_year():
 
 
 if __name__ == '__main__':
-    pass_dict = get_word_list("10-million-combos.txt")
-    english = english_words()
-    total_passwords = total_password_list()
+    #pass_dict = get_word_list("10-million-combos.txt")
+    #english = english_words()
+    total_passwords = total_password_list('10-million-combos.txt')
     # top_values =  get_top_n_values(pass_dict, 25)
     # num_passwords = num_passwords("10-million-combos.txt")
     # top_words = get_top_n_words(pass_dict, 25)
@@ -238,9 +253,11 @@ if __name__ == '__main__':
     #print freq_list
     #find_distance("hello", "jello")
     #occurances_of_words_in_pass(['hello', 'ell', 'hell'], pass_dict)
-    eng_dis = distance_from_words("hello", english)
-    pass_dis = distance_from_passwords("hello", total_passwords)
-    graph_distances(pass_dis)
+    #eng_dis = distance_from_words("hello", english)
+    #pass_dis = distance_from_passwords("hello", total_passwords)
+    pass_dist_dict = distance_from_passwords_dictionary("hello", total_passwords)
+    print pass_dist_dict
+    #graph_distances(pass_dis)
     #distance_from_words("hello", english)
     #distance_from_passwords("hello", total_passwords)
     # print english
