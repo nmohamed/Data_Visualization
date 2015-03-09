@@ -28,7 +28,8 @@ class MakeWindow(Frame):
                                 command = self.add_entry)
         button_quit.pack(fill = X)
     	button_common.pack(fill = X)
-        button_yourpw.pack()
+        button_yourpw.pack(fill = X)
+
 
     def add_entry(self):
         #s
@@ -47,11 +48,11 @@ class MakeWindow(Frame):
             graph_distances(distances)
             MakeWindow.add_distancesimage(self)
 
-        Label(self.button_frame, text = "Input Password:").pack()
+        Label(self.button_frame, text = "Input Password:").pack(fill = X)
         entry = Entry(self.button_frame)
-        entry.pack()
+        entry.pack(fill = X)
         button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info)
-        button_getinfo.pack()
+        button_getinfo.pack(fill = X)
 
 ###################################################functions to do stuff
     def add_percentscommonimage(self):
@@ -60,6 +61,7 @@ class MakeWindow(Frame):
         label = Label(image = photo)
         label.image = photo #keep a reference!
         label.pack()
+
 
     def add_distancesimage(self):
         image = Image.open('distancefrompass.png')
