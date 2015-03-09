@@ -18,6 +18,7 @@ def english_words():
 
     return english
 
+
 def get_word_list(file_name):
     """ Creates a dictionary of passwords and their counts.
     file_name: name of txt file
@@ -36,6 +37,26 @@ def get_word_list(file_name):
         else:
             count[words_in_line[1]] += 1        
     return count
+
+
+def get_usernames(file_name):
+    """ Creates a dictionary of usernames and their counts.
+    file_name: name of txt file
+    returns: dictionary
+    """
+    f = open(file_name, 'r')
+    d = dict()
+    lines = f.readlines()
+
+    for line in lines:
+        words_in_line = string.split(line)
+        if len(words_in_line) == 1 or words_in_line == []:
+            pass
+        elif words_in_line[0] not in d:
+            d[words_in_line[0]] = [words_in_line[1]]
+        else:
+            d[words_in_line[0]].append(words_in_line[1]) 
+    return d
 
 
 def occurances_of_words_in_pass(words_in_pass, pass_dict):
@@ -101,6 +122,9 @@ def get_top_n_words(word_list, n):
 
 
 def get_top_n_values(word_list, n):
+    """
+    Word list is a dictionary of words and the number of times  they appear
+    """
     top_words = dict(sorted(word_list.iteritems(), key=operator.itemgetter(1), reverse=True)[:n])
     top_values = top_words.values()
     top_values = sorted(top_values, reverse = True)

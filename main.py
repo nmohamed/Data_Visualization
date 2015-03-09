@@ -30,7 +30,8 @@ class MakeWindow(Frame):
                                 command = self.add_entry)
         button_quit.pack(fill = X)
     	button_common.pack(fill = X)
-        button_yourpw.pack()
+        button_yourpw.pack(fill = X)
+
 
     def add_entry(self):
         ############################
@@ -48,7 +49,6 @@ class MakeWindow(Frame):
             distances = distance_from_passwords(password, password_list)
             graph_distances(distances)
             MakeWindow.add_distancesimage(self)
-
         def get_Levenshtein():
             """ your_pw: your password that you input
                 passwords: dict of passwords with values as Levenschtein dist
@@ -79,30 +79,19 @@ class MakeWindow(Frame):
                 theta = randint(0, 360)
                 x.append(r * cos(theta))
                 y.append(r * sin(theta))
-            #graph circles)
-            source = ColumnDataSource(
-                data= dict(
-                    hover_pass = hover_pass,
-                    hover_lev = hover_lev,
-                    )
-
-                )
-
+                
+            source = ColumnDataSource(data= dict(hover_pass = hover_pass, hover_lev = hover_lev))
             plot.circle(x, y, alpha = .5, source = source)
-                #r = str(r)
-                #plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":r,
-                                                                #"Password":pw}
             plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
                                                             "Password":"@hover_pass"}
-
             show(plot)   
-        ###
+        ##################
         Label(self.button_frame, text = "Input Password:").pack()
         entry = Entry(self.button_frame)
         entry.pack()
         button_getLevenshtein = Button(self.button_frame, text = 'Get Levenshtein distances', command = get_Levenshtein).pack()
         button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info).pack()
-        #############################
+
 ###################################################functions to do stuff
     def add_percentscommonimage(self):
         image = Image.open('percentsofcommon.png')
@@ -110,6 +99,7 @@ class MakeWindow(Frame):
         label = Label(image = photo)
         label.image = photo #keep a reference!
         label.pack()
+
 
     def add_distancesimage(self):
         image = Image.open('distancefrompass.png')
