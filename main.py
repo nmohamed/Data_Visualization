@@ -6,7 +6,9 @@ Software Design SP2015
 
 from Tkinter import *
 from PIL import Image, ImageTk
-from datafunctions import english_words, compare_to_english, get_year, distance_from_passwords, graph_distances, total_password_list
+from datafunctions import english_words, compare_to_english, get_year
+from datafunctions import distance_from_passwords, graph_distances, total_password_list
+from datafunctions import distance_from_passwords_dictionary
 
 class MakeWindow(Frame):
   
@@ -32,7 +34,7 @@ class MakeWindow(Frame):
 
 
     def add_entry(self):
-        #s
+        ############################
         def get_info():
             """Get password info for password you Input
                 """
@@ -43,17 +45,58 @@ class MakeWindow(Frame):
             Label(self.information_frame, text = 'Your password: ' + password).pack()
             Label(self.information_frame, text = compare_to_english(password, english)).pack()
             Label(self.information_frame, text = get_year(password)).pack()
-            password_list = total_password_list()
+            password_list = total_password_list('10-million-combos.txt')
             distances = distance_from_passwords(password, password_list)
             graph_distances(distances)
             MakeWindow.add_distancesimage(self)
 
+<<<<<<< HEAD
         Label(self.button_frame, text = "Input Password:").pack(fill = X)
         entry = Entry(self.button_frame)
         entry.pack(fill = X)
         button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info)
         button_getinfo.pack(fill = X)
 
+=======
+        def get_Levenshtein():
+            """ your_pw: your password that you input
+                passwords: dict of passwords with values as Levenschtein dist
+                Graphs words with smaller lev dist in center and bigger ones further"""
+            from bokeh.plotting import figure, output_file, show
+            from bokeh.models import HoverTool
+            from random import randint, uniform
+            from math import cos, sin
+
+            your_pw = entry.get()
+            total_passwords = total_password_list('test_data.txt')
+            passwords = distance_from_passwords_dictionary(your_pw, total_passwords)
+            
+            output_file("lev_graph.html")
+            #hover.tooltips = []
+            plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
+                          tools = "resize, hover")
+
+            for pw in passwords:
+                # convert to polar coordinates
+                r = passwords[pw]
+                theta = randint(0, 360)
+                x = r * cos(theta)
+                y = r * sin(theta)
+
+                #graph circles
+                if passwords[pw] == 0:
+                    plot.circle([x], [y]) #do something with this, maybe? like say how common?
+                else:
+                    plot.circle([x], [y])
+            show(plot)   
+        ###
+        Label(self.button_frame, text = "Input Password:").pack()
+        entry = Entry(self.button_frame)
+        entry.pack()
+        button_getLevenshtein = Button(self.button_frame, text = 'Get Levenshtein distances', command = get_Levenshtein).pack()
+        button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info).pack()
+        #############################
+>>>>>>> 4764fada98f318b55d4878def170a44696c9f6e8
 ###################################################functions to do stuff
     def add_percentscommonimage(self):
         image = Image.open('percentsofcommon.png')
@@ -76,5 +119,10 @@ def main():
     ex = MakeWindow(root)
     root.mainloop()  
 
+
+
 if __name__ == '__main__':
     main()  
+    #pw = 'abc123'
+    #total_passwords = total_password_list('test_data.txt')
+    #graphing_circles(pw, distance_from_passwords_dictionary(pw, total_passwords))
