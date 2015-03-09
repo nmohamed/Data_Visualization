@@ -50,14 +50,14 @@ class MakeWindow(Frame):
             graph_distances(distances)
             MakeWindow.add_distancesimage(self)
 
-<<<<<<< HEAD
+
         Label(self.button_frame, text = "Input Password:").pack(fill = X)
         entry = Entry(self.button_frame)
         entry.pack(fill = X)
         button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info)
         button_getinfo.pack(fill = X)
 
-=======
+
         def get_Levenshtein():
             """ your_pw: your password that you input
                 passwords: dict of passwords with values as Levenschtein dist
@@ -96,7 +96,7 @@ class MakeWindow(Frame):
         button_getLevenshtein = Button(self.button_frame, text = 'Get Levenshtein distances', command = get_Levenshtein).pack()
         button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info).pack()
         #############################
->>>>>>> 4764fada98f318b55d4878def170a44696c9f6e8
+
 ###################################################functions to do stuff
     def add_percentscommonimage(self):
         image = Image.open('percentsofcommon.png')

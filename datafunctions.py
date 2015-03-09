@@ -40,7 +40,7 @@ def get_word_list(file_name):
 
 
 def get_usernames(file_name):
-    """ Creates a dictionary of usernames and their counts.
+    """ Creates a dictionary of usernames and their passwords.
     file_name: name of txt file
     returns: dictionary
     """
