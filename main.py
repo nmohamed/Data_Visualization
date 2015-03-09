@@ -53,7 +53,7 @@ class MakeWindow(Frame):
             """ your_pw: your password that you input
                 passwords: dict of passwords with values as Levenschtein dist
                 Graphs words with smaller lev dist in center and bigger ones further"""
-            from bokeh.plotting import figure, output_file, show
+            from bokeh.plotting import figure, output_file, show, ColumnDataSource
             from bokeh.models import HoverTool
             from random import randint, uniform
             from math import cos, sin
@@ -66,19 +66,35 @@ class MakeWindow(Frame):
             #hover.tooltips = []
             plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
                           tools = "resize, hover")
-
+            hover_pass = []
+            hover_lev = []
+            x = []
+            y = []
             for pw in passwords:
-                # convert to polar coordinates
+                #  for hovering
+                hover_pass.append(pw)
+                hover_lev.append(passwords[pw])
+                # convert to polar
                 r = passwords[pw]
                 theta = randint(0, 360)
-                x = r * cos(theta)
-                y = r * sin(theta)
+                x.append(r * cos(theta))
+                y.append(r * sin(theta))
+            #graph circles)
+            source = ColumnDataSource(
+                data= dict(
+                    hover_pass = hover_pass,
+                    hover_lev = hover_lev,
+                    )
 
-                #graph circles
-                if passwords[pw] == 0:
-                    plot.circle([x], [y]) #do something with this, maybe? like say how common?
-                else:
-                    plot.circle([x], [y])
+                )
+
+            plot.circle(x, y, alpha = .5, source = source)
+                #r = str(r)
+                #plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":r,
+                                                                #"Password":pw}
+            plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
+                                                            "Password":"@hover_pass"}
+
             show(plot)   
         ###
         Label(self.button_frame, text = "Input Password:").pack()
