@@ -49,6 +49,7 @@ class MakeWindow(Frame):
             distances = distance_from_passwords(password, password_list)
             graph_distances(distances)
             MakeWindow.add_distancesimage(self)
+<<<<<<< HEAD
 
 
         Label(self.button_frame, text = "Input Password:").pack(fill = X)
@@ -58,11 +59,13 @@ class MakeWindow(Frame):
         button_getinfo.pack(fill = X)
 
 
+=======
+>>>>>>> bea5b2f1f171b3aff9469c1298ab8a2c3277b2f2
         def get_Levenshtein():
             """ your_pw: your password that you input
                 passwords: dict of passwords with values as Levenschtein dist
                 Graphs words with smaller lev dist in center and bigger ones further"""
-            from bokeh.plotting import figure, output_file, show
+            from bokeh.plotting import figure, output_file, show, ColumnDataSource
             from bokeh.models import HoverTool
             from random import randint, uniform
             from math import cos, sin
@@ -75,27 +78,35 @@ class MakeWindow(Frame):
             #hover.tooltips = []
             plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
                           tools = "resize, hover")
-
+            hover_pass = []
+            hover_lev = []
+            x = []
+            y = []
             for pw in passwords:
-                # convert to polar coordinates
+                #  for hovering
+                hover_pass.append(pw)
+                hover_lev.append(passwords[pw])
+                # convert to polar
                 r = passwords[pw]
                 theta = randint(0, 360)
-                x = r * cos(theta)
-                y = r * sin(theta)
-
-                #graph circles
-                if passwords[pw] == 0:
-                    plot.circle([x], [y]) #do something with this, maybe? like say how common?
-                else:
-                    plot.circle([x], [y])
+                x.append(r * cos(theta))
+                y.append(r * sin(theta))
+                
+            source = ColumnDataSource(data= dict(hover_pass = hover_pass, hover_lev = hover_lev))
+            plot.circle(x, y, alpha = .5, source = source)
+            plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
+                                                            "Password":"@hover_pass"}
             show(plot)   
-        ###
+        ##################
         Label(self.button_frame, text = "Input Password:").pack()
         entry = Entry(self.button_frame)
         entry.pack()
         button_getLevenshtein = Button(self.button_frame, text = 'Get Levenshtein distances', command = get_Levenshtein).pack()
         button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info).pack()
+<<<<<<< HEAD
         #############################
+=======
+>>>>>>> bea5b2f1f171b3aff9469c1298ab8a2c3277b2f2
 
 ###################################################functions to do stuff
     def add_percentscommonimage(self):
