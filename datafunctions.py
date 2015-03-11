@@ -69,6 +69,18 @@ class File(object):
         self.dist = dist
 
 
+    def get_top_n_words(self, n = 25):
+        """ Takes a list of words as input and returns a list of the n most frequently
+            occurring words ordered from most to least frequently occurring.
+            word_list: a list of words 
+            n: the number of words to return
+            returns: a list of n most frequently occurring words ordered from most
+                     frequently to least frequently occurring
+        """
+        word_list = self.counts
+        sort = sorted(word_list, key = word_list.get, reverse = True)
+        self.top_words = sort[:n]   
+
     def get_top_n_values(self, n = 25):
         """
         Word list is a dictionary of words and the number of times  they appear
@@ -77,7 +89,7 @@ class File(object):
         top_words = dict(sorted(word_list.iteritems(), key=operator.itemgetter(1), reverse=True)[:n])
         top_values = top_words.values()
         top_values = sorted(top_values, reverse = True)
-        self.top_words = top_words
+        #self.top_words = top_words
         self.top_values = top_values
 
 
@@ -86,13 +98,14 @@ usernames = File('usernames',  "10-million-combos.txt", 0)
 passwords.counts_dictionary()
 passwords.distance_from_list("hello")
 passwords.get_top_n_values()
+passwords.get_top_n_words()
 print passwords.top_values
+print passwords.top_words
 
 class English(object):
 
         def __init__(self):
             """Creates a list of all of the entries in a text file"""
-            text = self.text
             words = text.readlines()
             english = []
 
