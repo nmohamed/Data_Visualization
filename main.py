@@ -6,13 +6,14 @@ Software Design SP2015
 
 from Tkinter import *
 from PIL import Image, ImageTk
-from datafunctions import english_words, compare_to_english, get_year
+from datafunctions import english_words, compare_to_english
 from datafunctions import distance_from_passwords, graph_distances, total_password_list
 from datafunctions import distance_from_passwords_dictionary
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool
 from random import randint, uniform
 from math import cos, sin
+from dot_graph import *
 
 class MakeWindow(Frame):
   
@@ -25,7 +26,6 @@ class MakeWindow(Frame):
         self.button_frame.pack(fill = X)
         self.information_frame.pack()
 
-######################################################elements of tkinter
     def add_button(self):
         Button(self.button_frame, text = 'Quit', command = quit).pack()
 
@@ -39,7 +39,17 @@ class MakeWindow(Frame):
         entry_pw.pack()
         Button(self.button_frame, text = 'Get Levenshtein distances', 
             command = lambda:self.get_Levenshtein()).pack()
-        ##################
+        Button(self.button_frame, text = 'Get Appearances of English Words in Your Password Out of 10 Million', 
+            command = lambda:self.get_english()).pack()
+
+    def get_english(self):
+        """ shows graph of number of times all the english words in your password appear in
+            10 million list"""
+        your_pw = entry_pw.get()
+        g = DotGraph('english', your_pw, 
+            'englishinyourpw-to-10mill.html', 'How Common English Words In Your Password Are')
+        g.make_label('Number of appearances in all passwords', 'English words in your password')
+        show(g.p1)
 
     def get_Levenshtein(self):
         """ your_pw: your password that you input
@@ -89,4 +99,3 @@ if __name__ == '__main__':
     root = Tk()
     ex = MakeWindow(root)
     root.mainloop()  
-    infolabel = None
