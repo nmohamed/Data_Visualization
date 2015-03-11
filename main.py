@@ -40,19 +40,24 @@ class MakeWindow(Frame):
                 """
             #self.information_frame.pack_forget()
             #self.information_frame = Frame(self.master)
-            pw = entry.get()
+            password = entry.get()
             english = english_words()
-            password = pw
-            #elf.labelText['text'] = pw
-
             Label(self.information_frame, text = 'Your password: ' + password).pack()
             Label(self.information_frame, text = compare_to_english(password, english)).pack()
             Label(self.information_frame, text = get_year(password)).pack()
+            password_list = total_password_list('10-million-combos.txt')
+            distances = distance_from_passwords(password, password_list)
+            graph_distances(distances)
+            MakeWindow.add_distancesimage(self)
 
-            #password_list = total_password_list('10-million-combos.txt')
-            #distances = distance_from_passwords(password, password_list)
-            #graph_distances(distances)
-            #MakeWindow.add_distancesimage(self)
+
+
+        Label(self.button_frame, text = "Input Password:").pack(fill = X)
+        entry = Entry(self.button_frame)
+        entry.pack(fill = X)
+        button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info)
+        button_getinfo.pack(fill = X)
+
 
         def get_Levenshtein():
             """ your_pw: your password that you input
@@ -64,15 +69,15 @@ class MakeWindow(Frame):
             from math import cos, sin
 
             your_pw = entry.get()
-            total_passwords = total_password_list('twenty_pw.txt')
+            total_passwords = total_password_list('test_data.txt')
             passwords = distance_from_passwords_dictionary(your_pw, total_passwords)
             
             output_file("lev_graph.html")
+            #hover.tooltips = []
             plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
                           tools = "resize, hover")
             hover_pass = []
             hover_lev = []
-            colors = []
             x = []
             y = []
             for pw in passwords:
@@ -84,13 +89,9 @@ class MakeWindow(Frame):
                 theta = randint(0, 360)
                 x.append(r * cos(theta))
                 y.append(r * sin(theta))
-                colors.append(('#ff3366'))
-            #colors = ['blue', 'purple', 'blue'][-50, 50]
-            source = ColumnDataSource(data= dict(
-                hover_pass = hover_pass,
-                hover_lev = hover_lev,
-                color = colors))
-            plot.circle(x, y, alpha = .5, source = source, color = colors)
+                
+            source = ColumnDataSource(data= dict(hover_pass = hover_pass, hover_lev = hover_lev))
+            plot.circle(x, y, alpha = .5, source = source)
             plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
                                                             "Password":"@hover_pass"}
             show(plot)   
