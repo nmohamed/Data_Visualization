@@ -1,7 +1,9 @@
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool, Range1d
-from datafunctions import english_words, get_word_list
+from datafunctions import *
+
 class DotGraph(object):
+    """Used for making Bokeh dot graphs"""
     def __init__(self, typegraph, password, file_name, titles):
 
         self.p1 = figure(title= titles, tools="resize, wheel_zoom, reset, save",)
@@ -21,6 +23,12 @@ class DotGraph(object):
                 return matching
 
         def word_is_pass(words, passwords):
+            """ Returns the number of times the strings in your password appear as passwords in the password data set
+            words is the list of english words contained within the passwords: 
+            english.contains_list("your password") where english = English()
+            passwords is the dictonary of passwords as keys and values being the number of times they appear:
+            password.counts where password = File('password', "10-million-combos.txt", 1)
+            """
             counts = []
             for word in words:
                 if word in passwords:
@@ -30,9 +38,13 @@ class DotGraph(object):
             return counts
             ####################################################
         if self.typegraph is 'english':
-            english = english_words()
+
+            #english = english_words()
             passwords_and_counts = get_word_list('10-million-combos.txt')
-            words = compare_to_english(self.password, english)
+            #words = compare_to_english(self.password, english)
+            english = English()
+            words = english.compare_to_english(self.password)
+            print words
             counts =  word_is_pass(words, passwords_and_counts)
 
             self.makegraph(words, counts, max(counts), len(words))

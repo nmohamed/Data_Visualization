@@ -9,7 +9,7 @@ from Levenshtein import distance
 import re
 
 class File(object):
-
+    """ """
 
     def __init__(self, name, file_name, column):
         """Opens text file and creates a 
@@ -89,23 +89,15 @@ class File(object):
         top_words = dict(sorted(word_list.iteritems(), key=operator.itemgetter(1), reverse=True)[:n])
         top_values = top_words.values()
         top_values = sorted(top_values, reverse = True)
-        #self.top_words = top_words
         self.top_values = top_values
 
 
-passwords = File('passwords', "10-million-combos.txt", 1)
-usernames = File('usernames',  "10-million-combos.txt", 0)
-passwords.counts_dictionary()
-passwords.distance_from_list("hello")
-passwords.get_top_n_values()
-passwords.get_top_n_words()
-print passwords.top_values
-print passwords.top_words
-
 class English(object):
+    """Deals with the English dictionary """
 
         def __init__(self):
             """Creates a list of all of the entries in a text file"""
+            text = open('/usr/share/dict/american-english', 'r')
             words = text.readlines()
             english = []
 
@@ -114,7 +106,7 @@ class English(object):
 
             self.english = english
 
-        def compare_to_english(self, english_in_password):
+        def compare_to_english_string(self, password):
             english = self.english
             matching = [word for word in english if word in password and len(word) > 2]
             if matching == []:
@@ -122,9 +114,29 @@ class English(object):
             else:
                 self.contains = 'Contains following English: ' + str(matching)
 
+        def compare_to_english_list(self, password):
+            english = self.english
+            matching = [word for word in english if word in password and len(word) > 2]
+            if matching == []:
+                self.contains_list = matching
+            else:
+                self.contains_list = matching
+
+
+passwords = File('passwords', "10-million-combos.txt", 1)
+usernames = File('usernames',  "10-million-combos.txt", 0)
+# passwords.counts_dictionary()
+# passwords.distance_from_list("hello")
+# passwords.get_top_n_values()
+# passwords.get_top_n_words()
+# print passwords.top_values
+# print passwords.top_words
 
 english = English()
-english.compare_to_english(["hello", "hell" , "ell"])
+# english.compare_to_english_string("hello")
+# english.compare_to_english_list("hello")
+# print english.contains
+# print english.contains_list
 
 
 def tenmill_year():
@@ -138,6 +150,20 @@ def tenmill_year():
                 years[num] = years.get(num, 0) + 1
     print years
 
+def word_is_pass(words, passwords):
+    """ Returns the number of times the strings in your password appear as passwords in the password data set
+    words is the list of english words contained within the passwords: 
+    english.contains_list("your password") where english = English()
+    passwords is the dictonary of passwords as keys and values being the number of times they appear:
+    password.counts where password = File('password', "10-million-combos.txt", 1)
+    """
+    counts = []
+    for word in words:
+        if word in passwords:
+            counts.append(passwords[word])
+        else:
+            counts.append(0)
+    return counts
 
 if __name__ == '__main__':
     pass
