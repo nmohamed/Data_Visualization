@@ -49,11 +49,11 @@ class MakeWindow(Frame):
             Label(self.information_frame, text = compare_to_english(password, english)).pack()
             Label(self.information_frame, text = get_year(password)).pack()
 
-            #password.set(entry.get())
             #password_list = total_password_list('10-million-combos.txt')
             #distances = distance_from_passwords(password, password_list)
             #graph_distances(distances)
             #MakeWindow.add_distancesimage(self)
+
         def get_Levenshtein():
             """ your_pw: your password that you input
                 passwords: dict of passwords with values as Levenschtein dist
