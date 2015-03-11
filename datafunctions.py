@@ -10,7 +10,6 @@ import re
 
 class File(object):
     """ """
-
     def __init__(self, name, file_name, column):
         """Opens text file and creates a 
         column 0 = usernames, column 1 = passwords
@@ -95,48 +94,49 @@ class File(object):
 class English(object):
     """Deals with the English dictionary """
 
-        def __init__(self):
-            """Creates a list of all of the entries in a text file"""
-            text = open('/usr/share/dict/american-english', 'r')
-            words = text.readlines()
-            english = []
+    def __init__(self):
+        """Creates a list of all of the entries in a text file"""
+        text = open('/usr/share/dict/american-english', 'r')
+        words = text.readlines()
+        english = []
 
-            for line in words:
-                english.append(line.translate(None, '\n'))
+        for line in words:
+            english.append(line.translate(None, '\n'))
 
-            self.english = english
+        self.english = english
 
-        def compare_to_english_string(self, password):
-            english = self.english
-            matching = [word for word in english if word in password and len(word) > 2]
-            if matching == []:
-                self.contains = "Does not contain English"
-            else:
-                self.contains = 'Contains following English: ' + str(matching)
+    def compare_to_english_string(self, password):
+        english = self.english
+        matching = [word for word in english if word in password and len(word) > 2]
+        if matching == []:
+            self.contains = "Does not contain English"
+        else:
+            self.contains = 'Contains following English: ' + str(matching)
 
-        def compare_to_english_list(self, password):
-            english = self.english
-            matching = [word for word in english if word in password and len(word) > 2]
-            if matching == []:
-                self.contains_list = matching
-            else:
-                self.contains_list = matching
+    def compare_to_english_list(self, password):
+        english = self.english
+        matching = [word for word in english if word in password and len(word) > 2]
+        if matching == []:
+            self.contains_list = matching
+        else:
+            self.contains_list = matching
 
+def return_objects(password):
+    passwords = File('passwords', "10-million-combos.txt", 1)
+    usernames = File('usernames',  "10-million-combos.txt", 0)
+    passwords.counts_dictionary()
+    passwords.distance_from_list(password)
+    passwords.get_top_n_values()
+    passwords.get_top_n_words()
+    # print passwords.top_values
+    # print passwords.top_words
 
-passwords = File('passwords', "10-million-combos.txt", 1)
-usernames = File('usernames',  "10-million-combos.txt", 0)
-# passwords.counts_dictionary()
-# passwords.distance_from_list("hello")
-# passwords.get_top_n_values()
-# passwords.get_top_n_words()
-# print passwords.top_values
-# print passwords.top_words
-
-english = English()
-# english.compare_to_english_string("hello")
-# english.compare_to_english_list("hello")
-# print english.contains
-# print english.contains_list
+    english = English()
+    english.compare_to_english_string(password)
+    english.compare_to_english_list(password)
+    # print english.contains
+    # print english.contains_list
+    return passwords
 
 
 def tenmill_year():

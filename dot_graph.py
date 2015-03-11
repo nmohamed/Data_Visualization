@@ -1,6 +1,6 @@
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool, Range1d
-from datafunctions import *
+from datafunctions import return_objects
 
 class DotGraph(object):
     """Used for making Bokeh dot graphs"""
@@ -40,8 +40,10 @@ class DotGraph(object):
         if self.typegraph is 'english':
 
             #english = english_words()
-            passwords_and_counts = get_word_list('10-million-combos.txt')
+            #passwords_and_counts = get_word_list('10-million-combos.txt')
             #words = compare_to_english(self.password, english)
+            passwords = return_objects("hello")
+            print type(passwords)
             english = English()
             words = english.compare_to_english(self.password)
             print words
@@ -68,6 +70,6 @@ class DotGraph(object):
         self.p1.yaxis.axis_label = y#'English words in your password'
 
 
-#g = DotGraph('english', 'friendly', 'englishinyourpw-to-10mill.html', 'How Common English Words In Your Password Are')
-#g.make_label('Number of appearances in all passwords', 'English words in your password')
-#show(g.p1)
+g = DotGraph('english', 'friendly', 'englishinyourpw-to-10mill.html', 'How Common English Words In Your Password Are')
+g.make_label('Number of appearances in all passwords', 'English words in your password')
+show(g.p1)
