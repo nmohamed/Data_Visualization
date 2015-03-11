@@ -1,3 +1,4 @@
+# -*- coding: latin1 -*-
 import string
 import heapq
 import operator
