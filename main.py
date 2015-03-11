@@ -9,6 +9,10 @@ from PIL import Image, ImageTk
 from datafunctions import english_words, compare_to_english, get_year
 from datafunctions import distance_from_passwords, graph_distances, total_password_list
 from datafunctions import distance_from_passwords_dictionary
+from bokeh.plotting import figure, output_file, show, ColumnDataSource
+from bokeh.models import HoverTool
+from random import randint, uniform
+from math import cos, sin
 
 class MakeWindow(Frame):
   
@@ -23,110 +27,66 @@ class MakeWindow(Frame):
 
 ######################################################elements of tkinter
     def add_button(self):
-    	button_common = Button(self.button_frame, text = 'Look at Common Data', 
-    							command = self.add_percentscommonimage)
-    	button_quit = Button(self.button_frame, text = 'Quit', command = quit)
-        button_yourpw = Button(self.button_frame, text = 'Find Info About Your Password',
-                                command = self.add_entry)
-        button_quit.pack(fill = X)
-    	button_common.pack(fill = X)
-        button_yourpw.pack(fill = X)
+        Button(self.button_frame, text = 'Quit', command = quit).pack()
 
+        Label(self.button_frame, text = "Look at Graphs on Common Data:").pack()
+    	Button(self.button_frame, text = 'Common Passwords Graph', 
+    		command = lambda:self.add_image('percentsofcommon.png')).pack()
 
-    def add_entry(self):
-        ############################
-        def get_info():
-            """Get password info for password you Input
-                """
-            #self.information_frame.pack_forget()
-            #self.information_frame = Frame(self.master)
-            pw = entry.get()
-            english = english_words()
-            password = pw
-            #elf.labelText['text'] = pw
-
-            Label(self.information_frame, text = 'Your password: ' + password).pack()
-            Label(self.information_frame, text = compare_to_english(password, english)).pack()
-            Label(self.information_frame, text = get_year(password)).pack()
-
-            #password_list = total_password_list('10-million-combos.txt')
-            #distances = distance_from_passwords(password, password_list)
-            #graph_distances(distances)
-            #MakeWindow.add_distancesimage(self)
-
-        def get_Levenshtein():
-            """ your_pw: your password that you input
-                passwords: dict of passwords with values as Levenschtein dist
-                Graphs words with smaller lev dist in center and bigger ones further"""
-            from bokeh.plotting import figure, output_file, show, ColumnDataSource
-            from bokeh.models import HoverTool
-            from random import randint, uniform
-            from math import cos, sin
-
-            your_pw = entry.get()
-            total_passwords = total_password_list('twenty_pw.txt')
-            passwords = distance_from_passwords_dictionary(your_pw, total_passwords)
-            
-            output_file("lev_graph.html")
-            plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
-                          tools = "resize, hover")
-            hover_pass = []
-            hover_lev = []
-            colors = []
-            x = []
-            y = []
-            for pw in passwords:
-                #  for hovering
-                hover_pass.append(pw)
-                hover_lev.append(passwords[pw])
-                # convert to polar
-                r = passwords[pw]
-                theta = randint(0, 360)
-                x.append(r * cos(theta))
-                y.append(r * sin(theta))
-                colors.append(('#ff3366'))
-            #colors = ['blue', 'purple', 'blue'][-50, 50]
-            source = ColumnDataSource(data= dict(
-                hover_pass = hover_pass,
-                hover_lev = hover_lev,
-                color = colors))
-            plot.circle(x, y, alpha = .5, source = source, color = colors)
-            plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
-                                                            "Password":"@hover_pass"}
-            show(plot)   
+        Label(self.button_frame, text = 'Enter a Password Below to Find Information:').pack()
+        global entry_pw 
+        entry_pw = Entry(self.button_frame)
+        entry_pw.pack()
+        Button(self.button_frame, text = 'Get Levenshtein distances', 
+            command = lambda:self.get_Levenshtein()).pack()
         ##################
-        Label(self.button_frame, text = "Input Password:").pack()
-        entry = Entry(self.button_frame)
-        entry.pack()
-        button_getLevenshtein = Button(self.button_frame, text = 'Get Levenshtein distances', command = get_Levenshtein).pack()
-        button_getinfo = Button(self.button_frame, text = 'Get info', command = get_info).pack()
 
-###################################################functions to do stuff
-    def add_percentscommonimage(self):
-        image = Image.open('percentsofcommon.png')
+    def get_Levenshtein(self):
+        """ your_pw: your password that you input
+            passwords: dict of passwords with values as Levenschtein dist
+            Graphs words with smaller lev dist in center and bigger ones further"""
+
+        your_pw = entry_pw.get()
+        total_passwords = total_password_list('twenty_pw.txt')
+        passwords = distance_from_passwords_dictionary(your_pw, total_passwords)
+        
+        output_file("lev_graph.html")
+        plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
+                      tools = "resize, hover, wheel_zoom, box_zoom, reset, save")
+        hover_pass = []
+        hover_lev = []
+        colors = []
+        x = []
+        y = []
+        for pw in passwords:
+            #  for hovering
+            hover_pass.append(pw)
+            hover_lev.append(passwords[pw])
+            # convert to polar
+            r = passwords[pw]
+            theta = randint(0, 360)
+            x.append(r * cos(theta))
+            y.append(r * sin(theta))
+            colors.append(('#ff3366'))
+        #colors = ['blue', 'purple', 'blue'][-50, 50]
+        source = ColumnDataSource(data= dict(
+            hover_pass = hover_pass,
+            hover_lev = hover_lev,
+            color = colors))
+        plot.circle(x, y, alpha = .5, source = source, color = colors)
+        plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
+                                                        "Password":"@hover_pass"}
+        show(plot)
+
+    def add_image(self, image_name):
+        image = Image.open(image_name) #percentsofcommon.png
         photo = ImageTk.PhotoImage(image)
         label = Label(image = photo)
         label.image = photo #keep a reference!
         label.pack()
 
-
-    def add_distancesimage(self):
-        image = Image.open('distancefrompass.png')
-        photo = ImageTk.PhotoImage(image)
-        label = Label(image = photo)
-        label.image = photo #keep a reference!
-        label.pack()
-
-
-def main():
+if __name__ == '__main__':
     root = Tk()
     ex = MakeWindow(root)
     root.mainloop()  
-
-
-
-if __name__ == '__main__':
-    main()  
-    #pw = 'abc123'
-    #total_passwords = total_password_list('test_data.txt')
-    #graphing_circles(pw, distance_from_passwords_dictionary(pw, total_passwords))
+    infolabel = None
