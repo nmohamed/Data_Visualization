@@ -134,7 +134,8 @@ class English(object):
             Sets attribute which is a list of strings"""
         english = self.english
         matching = [word for word in english if word in password and len(word) > 2]
-        self.contains_list = matching
+        matching.append(password)
+        self.contains_list = matching 
 
 
 def word_is_pass(words, passwords):
