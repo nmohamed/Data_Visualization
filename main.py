@@ -53,7 +53,6 @@ class MakeWindow(Frame):
     def get_english(self):
         """ Displays graph of number of times all the english words in your password
             appear as passwords in the data set"""
-
         your_pw = entry_pw.get()
         g = DotGraph('english', your_pw, 'englishinyourpw-to-10mill.html',
                      'How Common English Words In Your Password Are')
@@ -64,10 +63,12 @@ class MakeWindow(Frame):
     def get_Levenshtein(self):
         """ Displays interactive graph plotting passwords from the data set at a 
             Levenshtein distance away from the input"""
-
+        passwords = File('passwords', 'test_data.txt', 1) #running test data for speed, still pretty large and good
+        total_passwords = passwords.the_list
         your_pw = entry_pw.get()
-        total_passwords = total_password_list('twenty_pw.txt')
-        passwords = distance_from_passwords_dictionary(your_pw, total_passwords)
+
+        #total_passwords = total_password_list('twenty_pw.txt')
+        passwords = distance_from_passwords_dictionary(your_pw, passwords.dist)
         
         output_file("lev_graph.html")
         plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,

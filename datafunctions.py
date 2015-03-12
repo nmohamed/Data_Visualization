@@ -124,18 +124,6 @@ class English(object):
 
 
 
-passwords = File('passwords', "10-million-combos.txt", 1)
-usernames = File('usernames',  "10-million-combos.txt", 0)
-passwords.counts_dictionary()
-passwords.distance_from_list("hello")
-passwords.get_top_n_words()
-# print passwords.top_values
-# print passwords.top_words
-
-english = English()
-english.compare_to_english_string("hello")
-english.compare_to_english_list("hello")
-
 # print english.contains
 # print english.contains_list
 
@@ -170,7 +158,19 @@ def word_is_pass(words, passwords):
 #print word_is_pass(english.contains_list, passwords.counts)
 
 if __name__ == '__main__':
-    pass
+    passwords = File('passwords', "10-million-combos.txt", 1)
+    usernames = File('usernames',  "10-million-combos.txt", 0)
+    passwords.counts_dictionary()
+    passwords.distance_from_list("hello")
+    passwords.get_top_n_words()
+    passwords.get_top_n_values()
+
+
+    english = English()
+    english.compare_to_english_string("hello")
+    english.compare_to_english_list("hello")
+
+
 
 """ The Grave Yard """
 
