@@ -6,55 +6,64 @@ Software Design SP2015
 
 from Tkinter import *
 from PIL import Image, ImageTk
-from datafunctions import english_words, compare_to_english
-from datafunctions import distance_from_passwords, graph_distances, total_password_list
-from datafunctions import distance_from_passwords_dictionary
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool
 from random import randint, uniform
 from math import cos, sin
+from datafunctions import *
 from dot_graph import *
 
 class MakeWindow(Frame):
-  
+    """ Creates GUI for user interactivity. The GUI includes options for viewing graphs
+        on common password information, OR lets the user input a password and see how
+        the password compares to the data set of 10 million (or less, depending on the
+        graph) passwords."""
+
     def __init__(self, master):
+        """ Initializes the GUI. Creates a frame and adds the information """
         self.master = master
         self.button_frame = Frame(self.master, width = 400, height = 400, bg='', colormap = 'new')
-        self.information_frame = Frame(self.master)
         self.add_button()
-
         self.button_frame.pack(fill = X)
         self.information_frame.pack()
 
     def add_button(self):
+        """ Creates the buttons and entry form on the GUI. There are two portions to the
+            GUI: buttons to look at common information of the data set, and buttons to
+            compare your input to the data set."""
+
         Button(self.button_frame, text = 'Quit', command = quit).pack()
 
+        # Common information
         Label(self.button_frame, text = "Look at Graphs on Common Data:").pack()
         Button(self.button_frame, text = 'Common Passwords Graph', 
             command = lambda:self.add_image('percentsofcommon.png')).pack()
 
+        # Information based on your input
         Label(self.button_frame, text = 'Enter a Password Below to Find Information:').pack()
         global entry_pw 
         entry_pw = Entry(self.button_frame)
         entry_pw.pack()
+
         Button(self.button_frame, text = 'Get Levenshtein distances', 
             command = lambda:self.get_Levenshtein()).pack()
         Button(self.button_frame, text = 'Get Appearances of English Words in Your Password Out of 10 Million', 
             command = lambda:self.get_english()).pack()
 
     def get_english(self):
-        """ shows graph of number of times all the english words in your password appear in
-            10 million list"""
+        """ Displays graph of number of times all the english words in your password
+            appear as passwords in the data set"""
+
         your_pw = entry_pw.get()
-        g = DotGraph('english', your_pw, 
-            'englishinyourpw-to-10mill.html', 'How Common English Words In Your Password Are')
-        g.make_label('Number of appearances in all passwords', 'English words in your password')
+        g = DotGraph('english', your_pw, 'englishinyourpw-to-10mill.html',
+                     'How Common English Words In Your Password Are')
+        g.make_axis_label('Number of appearances in all passwords', 
+                          'English words in your password')
         show(g.p1)
 
     def get_Levenshtein(self):
-        """ your_pw: your password that you input
-            passwords: dict of passwords with values as Levenschtein dist
-            Graphs words with smaller lev dist in center and bigger ones further"""
+        """ Displays interactive graph plotting passwords from the data set at a 
+            Levenshtein distance away from the input"""
 
         your_pw = entry_pw.get()
         total_passwords = total_password_list('twenty_pw.txt')
@@ -89,6 +98,8 @@ class MakeWindow(Frame):
         show(plot)
 
     def add_image(self, image_name):
+        """ A function for buttons to do. Takes in a string of an image name and will
+            display that image in the GUI"""
         image = Image.open(image_name) #percentsofcommon.png
         photo = ImageTk.PhotoImage(image)
         label = Label(image = photo)
