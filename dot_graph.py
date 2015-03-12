@@ -56,17 +56,17 @@ class DotGraph(object):
         self.p1.yaxis.axis_label = y#'English words in your password'
 
 
-#g = DotGraph('englishinyourpw-to-10mill2.html', 'How Common English Words In Your Password Are')
-#g.do_type_english('goldentable')
-#g.make_axis_label('Number of appearances in all passwords', 'English words in your password')
-#show(g.p1)
+# g = DotGraph('englishinyourpw-to-10mill2.html', 'How Common English Words In Your Password Are')
+# g.do_type_english('goldentable')
+# g.make_axis_label('Number of appearances in all passwords', 'English words in your password')
+# show(g.p1)
 
 # g2 = DotGraph('top25-common.html', '25 Most Common Passwords')
 # g2.do_type_top25()
 # g2.make_axis_label('Appearances out of 10 million', 'Most common passwords')
 # show(g2.p1)
 
-g3 = DotGraph('years-common.html', 'Most Common Years in Passwords')
-g3.do_type_years()
-g3.make_axis_label('Appearances out of 10 million', 'Years')
-show(g3.p1)
+# g3 = DotGraph('years-common.html', 'Most Common Years in Passwords')
+# g3.do_type_years()
+# g3.make_axis_label('Appearances out of 10 million', 'Years')
+# show(g3.p1)

@@ -103,8 +103,6 @@ class File(object):
         newkeys = [str(x) for x in keys]
         self.years = newkeys
         self.yearvalues = values
-        #print newkeys
-        #print values
 
 class English(object):
     """Deals with the English dictionary """
