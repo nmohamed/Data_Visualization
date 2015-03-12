@@ -6,6 +6,7 @@ Software Design SP2015
     dot graphs in the GUI. Commented lines at the bottom are used to create the .html
     files that main.py opens
 """
+
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool, Range1d
 from datafunctions import *
@@ -19,13 +20,11 @@ class DotGraph(object):
                 titles: String, title of graph"""
         self.titles = titles
         self.p1 = figure(title= titles, tools="resize, wheel_zoom, reset, save",)
-                         #y_range= y_value, x_range=[0, 1.1*x_length])
         output_file(file_name, title= titles)
-        self.x0 = [0] * 50
+        self.x0 = [0] * 50 # For max number of values in y-axis
         
         self.passwords = File("10-million-combos.txt", 1)
         self.passwords.counts_dictionary()
-        #passwords.distance_from_list(password)
 
 
     def do_type_english(self, your_password):
@@ -36,7 +35,7 @@ class DotGraph(object):
         english.compare_to_english_list(your_password)
         words = english.contains_list
         counts = word_is_pass(words, self.passwords.counts)
-
+        # Make graph
         self.makegraph(counts, words, max(counts), len(words))
 
 
@@ -44,7 +43,7 @@ class DotGraph(object):
         """ Makes graph of number of occurences of the 25 most common passwords"""
         self.passwords.get_top_n_values()
         self.passwords.get_top_n_words()
-
+        # Make graph
         self.makegraph(self.passwords.top_values, self.passwords.top_words,
                        max(self.passwords.top_values), len(self.passwords.top_words))
 
@@ -52,8 +51,7 @@ class DotGraph(object):
     def do_type_years(self):
         """ Makes graph of number of occurences of the last 49 years in passwords"""
         self.passwords.tenmill_year()
-        #password.year #years
-        #password.yearvalues #number for year
+        # Make graph
         self.makegraph(self.passwords.yearvalues, self.passwords.years,
                        max(self.passwords.yearvalues), len(self.passwords.years))
 
@@ -64,7 +62,7 @@ class DotGraph(object):
         self.usernames.counts_dictionary()
         self.usernames.get_top_n_values()
         self.usernames.get_top_n_words()
-
+        # Make graph
         self.makegraph(self.usernames.top_values, self.usernames.top_words,
                        max(self.usernames.top_values), len(self.usernames.top_words))
 
@@ -92,6 +90,7 @@ class DotGraph(object):
                 y: String for y axis title"""
         self.p1.xaxis.axis_label = x
         self.p1.yaxis.axis_label = y
+
 
 if __name__ == '__main__':
     pass
