@@ -9,12 +9,16 @@ from Levenshtein import distance
 import re
 
 class File(object):
-    """ """
-    def __init__(self, name, file_name, column):
-        """Opens text file and creates a 
+    """Deals with our 10 10-million-combos data set, and other data sets in a similar format
+    namely our test data set, which we sometimes use because it is still really big and faster
+    to move through.
+    """
+    def __init__(self, file_name, column):
+        """Opens text file and creates its text and a column which defines if it is a password
+        or username data set
+        file_name = txt file that you are reading the data from, probably 10-million-combos.txt
         column 0 = usernames, column 1 = passwords
         """
-        self.name = name 
         self.text = open(file_name, 'r')
         self.column = column 
         lines =  self.text.readlines()
@@ -33,7 +37,7 @@ class File(object):
     def counts_dictionary(self):
         """ Creates a dictionary where the key is the words and the value 
         is the number of times they appear
-        returns: dictionary
+        sets a: dictionary
         """
         the_list = self.the_list
         column = self.column
@@ -47,8 +51,9 @@ class File(object):
 
         self.counts = counts   
 
+
     def length_of_file(self):
-        """ returns lenth of file"""
+        """ sets a int representing lenth of file"""
         the_list = self.the_list
         self.length = len(the_list) #9997986
 
@@ -58,7 +63,8 @@ class File(object):
         your_word: string that is your password
         Uses Levenshtein distance to find the number of characters off a password
         is from passwords and returns a dictionary where keys are passworeds and values = dist
-        returns:dictionary"""
+        sets a :dictionary
+        """
         dist = {}
         for word in self.the_list:
             if word in dist:
@@ -69,26 +75,26 @@ class File(object):
 
 
     def get_top_n_words(self, n = 25):
-        """ Takes a list of words as input and returns a list of the n most frequently
-            occurring words ordered from most to least frequently occurring.
-            word_list: a list of words 
-            n: the number of words to return
-            returns: a list of n most frequently occurring words ordered from most
+        """ n: the number of words to return
+            Creates: a list of n most frequently occurring words ordered from most
                      frequently to least frequently occurring
         """
         word_list = self.counts
         sort = sorted(word_list, key = word_list.get, reverse = True)
         self.top_words = sort[:n]   
 
+
     def get_top_n_values(self, n = 25):
         """
-        Word list is a dictionary of words and the number of times  they appear
+        Creates a list of the number of times each word occures in the provided dictionary
+        n: the top number to be returned
         """
         word_list = self.counts
         top_words = dict(sorted(word_list.iteritems(), key=operator.itemgetter(1), reverse=True)[:n])
         top_values = top_words.values()
         top_values = sorted(top_values, reverse = True)
         self.top_values = top_values
+
 
     def tenmill_year(self):
         """For making graph of password years thatre most common"""
@@ -104,6 +110,7 @@ class File(object):
         self.years = newkeys
         self.yearvalues = values
 
+
 class English(object):
     """Deals with the English dictionary """
 
@@ -118,21 +125,15 @@ class English(object):
 
         self.english = english
 
-    def compare_to_english_string(self, password):
-        english = self.english
-        matching = [word for word in english if word in password and len(word) > 2]
-        if matching == []:
-            self.contains = "Does not contain English"
-        else:
-            self.contains = 'Contains following English: ' + str(matching)
 
     def compare_to_english_list(self, password):
+        """Takes a password and finds a list of english words that are within the password
+        Sets attribute of a list or strings
+        """
         english = self.english
         matching = [word for word in english if word in password and len(word) > 2]
-        if matching == []:
-            self.contains_list = matching
-        else:
-            self.contains_list = matching
+        matching.append(password)
+        self.contains_list = matching
 
 
 def word_is_pass(words, passwords):
@@ -170,6 +171,18 @@ if __name__ == '__main__':
 
 """ The Grave Yard """
 
+
+    # def compare_to_english_string(self, password):
+    #     """Takes a password and finds what english words are contained within the password
+    #     Creates an attribute which is a string that can possibly be printed later
+    #     """
+    #     english = self.english
+    #     matching = self.contains_list
+    #     if matching == []:
+    #         self.contains = "Does not contain English"
+    #     else:
+    #         self.contains = 'Contains following English: ' + str(matching)
+            
     # def get_top_n_words(self, n = 25):
     #     """ Takes a list of words as input and returns a list of the n most frequently
     #         occurring words ordered from most to least frequently occurring.
