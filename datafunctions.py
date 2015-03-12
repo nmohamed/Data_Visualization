@@ -1,8 +1,6 @@
-# -*- coding: latin1 -*-
 import string
 import heapq
 import operator
-#import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
 from Levenshtein import distance
@@ -97,7 +95,10 @@ class File(object):
 
 
     def tenmill_year(self):
-        """For making graph of password years thatre most common"""
+        """For making graph of password years that are most common
+        Creates attributes of years which is the years and yearvalues which is the number
+        of times each year comes up, both of these are lists
+        """
         passes = self.the_list
         years = {}
         for password in passes:
@@ -112,7 +113,7 @@ class File(object):
 
 
 class English(object):
-    """Deals with the English dictionary """
+    """Deals with the English dictionary inside of Linux"""
 
     def __init__(self):
         """Creates a list of all of the entries in a text file"""
@@ -127,12 +128,11 @@ class English(object):
 
 
     def compare_to_english_list(self, password):
-        """Takes a password and finds a list of english words that are within the password
-        Sets attribute of a list or strings
+        """Takes a password (a string) and finds a list of english words that are within the password
+        Sets attribute which is a list of strings
         """
         english = self.english
         matching = [word for word in english if word in password and len(word) > 2]
-        matching.append(password)
         self.contains_list = matching
 
 
@@ -150,21 +150,4 @@ def word_is_pass(words, passwords):
         else:
             counts.append(0)
     return counts
-
-
-#print word_is_pass(english.contains_list, passwords.counts)
-
-if __name__ == '__main__':
-    passwords = File('passwords', "10-million-combos.txt", 1)
-    usernames = File('usernames',  "10-million-combos.txt", 0)
-    passwords.counts_dictionary()
-    passwords.distance_from_list("hello")
-    passwords.get_top_n_words()
-    passwords.get_top_n_values()
-    passwords.tenmill_year()
-
-    english = English()
-    english.compare_to_english_string("hello")
-    english.compare_to_english_list("hello")
-
 
