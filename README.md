@@ -1,5 +1,5 @@
 # Data_Visualization
-Nora Mohamed &amp; Lucy Wilcox's data visualization project for Software Design SP 2015
+Nora Mohamed &amp; Lucy Wilcox's python data visualization project for Software Design SP 2015
 
 This project’s goal is to create an interactive visualization of our dataset of over 10 million username and password combinations, focusing on the password portion of the dataset. The program creates a GUI using TKinter, where the user can look at graphs of commonly occurring data on the passwords or look at graphs with information comparing user input to the data set. The graphs are generated in the user’s web browser using Bokeh, which allows them to be interactive as well.
 
