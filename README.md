@@ -5,7 +5,7 @@ This project’s goal is to create an interactive visualization of our dataset o
 
 <b>IMPORTANT</b>: datafunctions.py assumes you are using a Linux distibution where the location of your computer's english dictionary is /usr/share/dict/american-english. Change this if it's not true. Also make sure to download the dataset below, as it's too big to push to github.
 
-<b>Download our dataset</b>:<br>
+<b>Download our dataset</b>:<br>Please download to the repository you are running this code from:
 <a href = "https://www.dropbox.com/s/wr60kzhpylwcwz8/10-million-combos.txt">10-million-combos.txt</a>
 
 <b>Libraries to import</b>:<br>
