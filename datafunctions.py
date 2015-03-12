@@ -121,22 +121,23 @@ class English(object):
         else:
             self.contains_list = matching
 
-def return_objects(password):
-    passwords = File('passwords', "10-million-combos.txt", 1)
-    usernames = File('usernames',  "10-million-combos.txt", 0)
-    passwords.counts_dictionary()
-    passwords.distance_from_list(password)
-    passwords.get_top_n_values()
-    passwords.get_top_n_words()
-    # print passwords.top_values
-    # print passwords.top_words
 
-    english = English()
-    english.compare_to_english_string(password)
-    english.compare_to_english_list(password)
-    # print english.contains
-    # print english.contains_list
-    return passwords
+
+
+passwords = File('passwords', "10-million-combos.txt", 1)
+usernames = File('usernames',  "10-million-combos.txt", 0)
+passwords.counts_dictionary()
+passwords.distance_from_list("hello")
+passwords.get_top_n_words()
+# print passwords.top_values
+# print passwords.top_words
+
+english = English()
+english.compare_to_english_string("hello")
+english.compare_to_english_list("hello")
+
+# print english.contains
+# print english.contains_list
 
 
 def tenmill_year():
@@ -164,6 +165,9 @@ def word_is_pass(words, passwords):
         else:
             counts.append(0)
     return counts
+
+
+#print word_is_pass(english.contains_list, passwords.counts)
 
 if __name__ == '__main__':
     pass
