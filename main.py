@@ -12,6 +12,7 @@ from random import randint, uniform
 from math import cos, sin
 from datafunctions import *
 from dot_graph import *
+import webbrowser
 
 class MakeWindow(Frame):
     """ Creates GUI for user interactivity. The GUI includes options for viewing graphs
@@ -25,6 +26,7 @@ class MakeWindow(Frame):
         self.button_frame = Frame(self.master, width = 400, height = 400, bg='', colormap = 'new')
         self.add_button()
         self.button_frame.pack(fill = X)
+        self.current_directory = 'file://' + sys.argv[0]
 
     def add_button(self):
         """ Creates the buttons and entry form on the GUI. There are two portions to the
@@ -36,7 +38,11 @@ class MakeWindow(Frame):
         # Common information
         Label(self.button_frame, text = "Look at Graphs on Common Data:").pack(fill = X)
         Button(self.button_frame, text = 'Common Passwords Graph', 
-            command = lambda:self.add_image('percentsofcommon.png')).pack(fill = X)
+            command = lambda:webbrowser.open(self.current_directory[0:-7] + '/top25-common.html',
+                                             new = 2)).pack(fill = X)
+        Button(self.button_frame, text = 'Common Years Graph', 
+            command = lambda:webbrowser.open(self.current_directory[0:-7] + '/years-common.html',
+                                             new = 2)).pack(fill = X)
 
         # Information based on your input
         Label(self.button_frame, text = 'Enter a Password Below to Find Information:').pack(fill = X)
@@ -63,7 +69,7 @@ class MakeWindow(Frame):
     def get_Levenshtein(self):
         """ Displays interactive graph plotting passwords from the data set at a 
             Levenshtein distance away from the input"""
-        passwords = File('passwords', 'test_data.txt', 1) #running test data for speed, still pretty large and good
+        self.passwords_quick = File('passwords', 'test_data.txt', 1) #running test data for speed, still pretty large and good
         total_passwords = passwords.the_list
         your_pw = entry_pw.get()
 
