@@ -92,7 +92,7 @@ class File(object):
 
     def tenmill_year(self):
         """For making graph of password years thatre most common"""
-        passes = passwords.the_list
+        passes = self.the_list
         years = {}
         for password in passes:
             numbs = map(int, re.findall('\d+', password))
@@ -136,13 +136,6 @@ class English(object):
             self.contains_list = matching
 
 
-
-
-# print english.contains
-# print english.contains_list
-
-
-
 def word_is_pass(words, passwords):
     """ Returns the number of times the strings in your password appear as passwords in the password data set
     words is the list of english words contained within the passwords: 
@@ -169,9 +162,6 @@ if __name__ == '__main__':
     passwords.get_top_n_words()
     passwords.get_top_n_values()
     passwords.tenmill_year()
-
-    print passwords.years
-    print passwords.yearvalues
 
     english = English()
     english.compare_to_english_string("hello")
