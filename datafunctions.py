@@ -97,13 +97,14 @@ class File(object):
         for password in passes:
             numbs = map(int, re.findall('\d+', password))
             for num in numbs:
-                if num > 1900 and num < 2020:
+                if num > 1965 and num < 2016:
                     years[num] = years.get(num, 0) + 1
         keys, values = years.keys(), years.values()
-        self.years = keys
+        newkeys = [str(x) for x in keys]
+        self.years = newkeys
         self.yearvalues = values
-
-
+        #print newkeys
+        #print values
 
 class English(object):
     """Deals with the English dictionary """

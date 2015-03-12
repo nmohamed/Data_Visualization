@@ -10,7 +10,7 @@ class DotGraph(object):
         self.p1 = figure(title= titles, tools="resize, wheel_zoom, reset, save",)
                          #y_range= y_value, x_range=[0, 1.1*x_length])
         output_file(file_name, title= titles)
-        self.x0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.x0 = [0] * 50
         
         self.passwords = File('passwords', "10-million-combos.txt", 1)
         #passwords.distance_from_list(password)
@@ -33,15 +33,22 @@ class DotGraph(object):
         self.makegraph(self.passwords.top_values, self.passwords.top_words,
                        max(self.passwords.top_values), len(self.passwords.top_words))
 
+    def do_type_years(self):
+        self.passwords.tenmill_year()
+        #password.year #years
+        #password.yearvalues #number for year
+        self.makegraph(self.passwords.yearvalues, self.passwords.years,
+                       max(self.passwords.yearvalues), len(self.passwords.years))
+
     def makegraph(self, x_value, y_value, x_length, y_length):
-        """y_value is a list of y values, x_value is list of x values"""
+        """y_value is a list of strings, x_value is list of integers"""
         self.p1.y_range = Range1d(start = 0, end = y_length)
         self.p1.x_range = Range1d(start = 0, end = 1.1*x_length)
         self.p1 = figure(title = self.titles, tools="resize, wheel_zoom, reset, save",
                          y_range= y_value, x_range=[0, 1.1*x_length])
 
-        self.p1.segment(self.x0, y_value, x_value, y_value, line_width=2, line_color="green")
-        self.p1.circle(x_value, y_value, size=15, fill_color="orange", line_color="green", 
+        self.p1.segment(self.x0, y_value, x_value, y_value, line_width=2, line_color="#0085ff")
+        self.p1.circle(x_value, y_value, size=15, fill_color="#fff400", line_color="#0085ff", 
                         line_width=3)
 
     def make_axis_label(self, x, y):
@@ -58,3 +65,8 @@ class DotGraph(object):
 # g2.do_type_top25()
 # g2.make_axis_label('Appearances out of 10 million', 'Most common passwords')
 # show(g2.p1)
+
+g3 = DotGraph('years-common.html', 'Most Common Years in Passwords')
+g3.do_type_years()
+g3.make_axis_label('Appearances out of 10 million', 'Years')
+show(g3.p1)
