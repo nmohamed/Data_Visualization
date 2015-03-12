@@ -49,7 +49,7 @@ class DotGraph(object):
         self.p1.circle(x_value, y_value, size=15, fill_color="orange", line_color="green", 
                         line_width=3)
 
-    def make_label(self, x, y):
+    def make_axis_label(self, x, y):
         self.p1.xaxis.axis_label = x#'Number of appearances in all passwords'
         self.p1.yaxis.axis_label = y#'English words in your password'
 
