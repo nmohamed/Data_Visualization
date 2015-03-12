@@ -12,27 +12,26 @@ class DotGraph(object):
         output_file(file_name, title= titles)
         self.x0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         
-        passwords = File('passwords', "10-million-combos.txt", 1)
+        self.passwords = File('passwords', "10-million-combos.txt", 1)
         #passwords.distance_from_list(password)
 
     def do_type_english(self, your_password):
         """ Makes a graph """
-        self.password = your_password
-        passwords.counts_dictionary()
+        self.passwords.counts_dictionary()
         english = English()
 
         english.compare_to_english_list(your_password)
         words = english.contains_list
-        counts = word_is_pass(words, passwords.counts)
+        counts = word_is_pass(words, self.passwords.counts)
 
         self.makegraph(counts, words, max(counts), len(words))
 
     def do_type_top25(self):
-        passwords.get_top_n_values()
-        passwords.get_top_n_words()
+        self.passwords.get_top_n_values()
+        self.passwords.get_top_n_words()
 
-        self.makegraph(passwords.top_values, passwords.top_words,
-                       max(passwords.top_values), len(passwords.top_words))
+        self.makegraph(self.passwords.top_values, self.passwords.top_words,
+                       max(self.passwords.top_values), len(self.passwords.top_words))
 
     def makegraph(self, x_value, y_value, x_length, y_length):
         """y_value is a list of y values, x_value is list of x values"""
@@ -50,8 +49,8 @@ class DotGraph(object):
         self.p1.yaxis.axis_label = y#'English words in your password'
 
 
-#g = DotGraph('englishinyourpw-to-10mill.html', 'How Common English Words In Your Password Are')
-#g.do_type_english('thisispw')
+#g = DotGraph('englishinyourpw-to-10mill2.html', 'How Common English Words In Your Password Are')
+#g.do_type_english('goldentable')
 #g.make_axis_label('Number of appearances in all passwords', 'English words in your password')
 #show(g.p1)
 
