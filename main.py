@@ -2,10 +2,10 @@
 Data Visualization Project
 Lucy Wilcox & Nora Mohamed
 Software Design SP2015
+    main.py is the runnable file. Includes the class MakeWindow that creates the GUI
 """
 
 from Tkinter import *
-from PIL import Image, ImageTk
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool
 from random import randint, uniform
@@ -21,43 +21,50 @@ class MakeWindow(Frame):
         graph) passwords."""
 
     def __init__(self, master):
-        """ Initializes the GUI. Creates a frame and adds the information """
+        """ Initializes the GUI. Creates a frame and then adds button from 
+            add_button method"""
+        # Initialize GUI & frame
         self.master = master
-        self.button_frame = Frame(self.master, width = 400, height = 400, bg='', colormap = 'new')
+        self.button_frame = Frame(self.master, width = 400, height = 400, colormap = 'new')
         self.add_button()
         self.button_frame.pack(fill = X)
+        # For calling premade bokeh graphs
         self.current_directory = 'file://' + sys.argv[0]
+
 
     def add_button(self):
         """ Creates the buttons and entry form on the GUI. There are two portions to the
             GUI: buttons to look at common information of the data set, and buttons to
             compare your input to the data set."""
-
+        # Quit Button
         Button(self.button_frame, text = 'Quit', command = quit).pack(fill = X)
-
-        # Common information
-        Label(self.button_frame, text = "Look at Graphs on Common Data:").pack(fill = X)
-        Button(self.button_frame, text = 'Common Passwords Graph', 
+        # Common Information Buttons
+        Label(self.button_frame, text = "\n\nLook at Graphs on Common Data:").pack(fill = X)
+        Button(self.button_frame, text = 'Most Common Passwords Graph', 
             command = lambda:webbrowser.open(self.current_directory[0:-7] + '/top25-common.html',
                                              new = 2)).pack(fill = X)
-        Button(self.button_frame, text = 'Common Years Graph', 
+        Button(self.button_frame, text = 'Most Common Years Graph', 
             command = lambda:webbrowser.open(self.current_directory[0:-7] + '/years-common.html',
                                              new = 2)).pack(fill = X)
-
-        # Information based on your input
-        Label(self.button_frame, text = 'Enter a Password Below to Find Information:').pack(fill = X)
+        Button(self.button_frame, text = 'Most Common Usernames Graph', 
+            command = lambda:webbrowser.open(self.current_directory[0:-7] + '/usernames-common.html',
+                                             new = 2)).pack(fill = X)
+        # Password Entry
+        Label(self.button_frame, text = '\n\nEnter a Password Below to Find Information:').pack(fill = X)
         global entry_pw 
         entry_pw = Entry(self.button_frame)
         entry_pw.pack(fill = X)
-
-        Button(self.button_frame, text = 'Get Levenshtein distances', 
+        # Input Password Buttons
+        Button(self.button_frame, text = 'Get Levenshtein Distances of Your Password', 
             command = lambda:self.get_Levenshtein()).pack(fill = X)
-        Button(self.button_frame, text = 'Get Appearances of English Words in Your Password Out of 10 Million', 
+        Button(self.button_frame, text = 'Get Appearances of Password & Words in Password Out of 10 Million', 
             command = lambda:self.get_english()).pack(fill = X)
+
 
     def get_english(self):
         """ Displays graph of number of times all the english words in your password
-            appear as passwords in the data set"""
+            appear as passwords in the data set, as well as how often the password
+            you input itself appears"""
         your_pw = entry_pw.get()
         g = DotGraph('englishinyourpw-to-10mill.html',
                      'How Common Words in Your Password Are')
@@ -66,16 +73,16 @@ class MakeWindow(Frame):
                           'English words in your password')
         show(g.p1)
 
+
     def get_Levenshtein(self):
         """ Displays interactive graph plotting passwords from the data set at a 
             Levenshtein distance away from the input"""
-        self.passwords_quick = File('passwords', 'test_data.txt', 1) #running test data for speed, still pretty large and good
-        total_passwords = passwords.the_list
+        # Get data
+        passwords_quick = File('test_data.txt', 1) #running smaller portion of dataset for speed, still pretty large and good
+        total_passwords = passwords_quick.the_list
         your_pw = entry_pw.get()
-
-        #total_passwords = total_password_list('twenty_pw.txt')
-        passwords = distance_from_passwords_dictionary(your_pw, passwords.dist)
-        
+        passwords_quick.distance_from_list(your_pw)
+        # Initialize plot
         output_file("lev_graph.html")
         plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
                       tools = "resize, hover, wheel_zoom, box_zoom, reset, save")
@@ -84,36 +91,29 @@ class MakeWindow(Frame):
         colors = []
         x = []
         y = []
-        for pw in passwords:
-            #  for hovering
+        for pw in passwords_quick.dist:
+            # For hovering
             hover_pass.append(pw)
-            hover_lev.append(passwords[pw])
-            # convert to polar
-            r = passwords[pw]
+            hover_lev.append(passwords_quick.dist[pw])
+            # Convert to polar
+            r = passwords_quick.dist[pw]
             theta = randint(0, 360)
             x.append(r * cos(theta))
             y.append(r * sin(theta))
             colors.append(('#ff3366'))
-        #colors = ['blue', 'purple', 'blue'][-50, 50]
+        # Create data source for hovering
         source = ColumnDataSource(data= dict(
             hover_pass = hover_pass,
             hover_lev = hover_lev,
             color = colors))
+        # Graph data
         plot.circle(x, y, alpha = .5, source = source, color = colors)
         plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
                                                         "Password":"@hover_pass"}
         show(plot)
 
-    def add_image(self, image_name):
-        """ A function for buttons to do. Takes in a string of an image name and will
-            display that image in the GUI"""
-        image = Image.open(image_name) #percentsofcommon.png
-        photo = ImageTk.PhotoImage(image)
-        label = Label(image = photo)
-        label.image = photo #keep a reference!
-        label.pack()
 
 if __name__ == '__main__':
     root = Tk()
     ex = MakeWindow(root)
-    root.mainloop()  
+    root.mainloop() 
