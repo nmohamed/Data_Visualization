@@ -90,6 +90,20 @@ class File(object):
         top_values = sorted(top_values, reverse = True)
         self.top_values = top_values
 
+    def tenmill_year(self):
+        """For making graph of password years thatre most common"""
+        passes = passwords.the_list
+        years = {}
+        for password in passes:
+            numbs = map(int, re.findall('\d+', password))
+            for num in numbs:
+                if num > 1900 and num < 2020:
+                    years[num] = years.get(num, 0) + 1
+        keys, values = years.keys(), years.values()
+        self.years = keys
+        self.yearvalues = values
+
+
 
 class English(object):
     """Deals with the English dictionary """
@@ -128,16 +142,6 @@ class English(object):
 # print english.contains_list
 
 
-def tenmill_year():
-    """For making graph of password years thatre most common"""
-    passes = total_password_list()
-    years = {}
-    for password in passes:
-        numbs = map(int, re.findall('\d+', password))
-        for num in numbs:
-            if num > 1900 and num < 2020:
-                years[num] = years.get(num, 0) + 1
-    print years
 
 def word_is_pass(words, passwords):
     """ Returns the number of times the strings in your password appear as passwords in the password data set
@@ -164,7 +168,10 @@ if __name__ == '__main__':
     passwords.distance_from_list("hello")
     passwords.get_top_n_words()
     passwords.get_top_n_values()
+    passwords.tenmill_year()
 
+    print passwords.years
+    print passwords.yearvalues
 
     english = English()
     english.compare_to_english_string("hello")
