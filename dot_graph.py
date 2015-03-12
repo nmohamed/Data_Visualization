@@ -9,7 +9,9 @@ Software Design SP2015
 
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool, Range1d
+from random import randint, uniform
 from datafunctions import *
+from math import cos, sin
 
 class DotGraph(object):
     """Used for making Bokeh dot graphs. The y axis is of strings, x axis is numbers"""
@@ -82,6 +84,44 @@ class DotGraph(object):
         self.p1.segment(self.x0, y_value, x_value, y_value, line_width=2, line_color="#ff0033")
         self.p1.circle(x_value, y_value, size=15, fill_color="#00ffb8", line_color="#ff0033", 
                         line_width=3)
+
+
+    def do_type_Lev(self, your_pw):
+        """ Displays interactive graph plotting passwords from the data set at a 
+            Levenshtein distance away from the input"""
+        # Get data
+        passwords_quick = File('test_data.txt', 1) #running smaller portion of dataset for speed, still pretty large and good
+        total_passwords = passwords_quick.the_list
+        passwords_quick.distance_from_list(your_pw)
+        # Initialize plot
+        output_file("lev_graph.html")
+        plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
+                      tools = "resize, hover, wheel_zoom, box_zoom, reset, save")
+        hover_pass = []
+        hover_lev = []
+        colors = []
+        x = []
+        y = []
+        for pw in passwords_quick.dist:
+            # For hovering
+            hover_pass.append(pw)
+            hover_lev.append(passwords_quick.dist[pw])
+            # Convert to polar
+            r = passwords_quick.dist[pw]
+            theta = randint(0, 360)
+            x.append(r * cos(theta))
+            y.append(r * sin(theta))
+            colors.append(('#ff3366'))
+        # Create data source for hovering
+        source = ColumnDataSource(data= dict(
+            hover_pass = hover_pass,
+            hover_lev = hover_lev,
+            color = colors))
+        # Graph data
+        plot.circle(x, y, alpha = .5, source = source, color = colors)
+        plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
+                                                        "Password":"@hover_pass"}
+        show(plot)
 
 
     def make_axis_label(self, x, y):

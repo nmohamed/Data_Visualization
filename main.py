@@ -8,8 +8,6 @@ Software Design SP2015
 from Tkinter import *
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.models import HoverTool
-from random import randint, uniform
-from math import cos, sin
 from datafunctions import *
 from dot_graph import *
 import webbrowser
@@ -75,42 +73,12 @@ class MakeWindow(Frame):
 
 
     def get_Levenshtein(self):
-        """ Displays interactive graph plotting passwords from the data set at a 
-            Levenshtein distance away from the input"""
-        # Get data
-        passwords_quick = File('test_data.txt', 1) #running smaller portion of dataset for speed, still pretty large and good
-        total_passwords = passwords_quick.the_list
+        """ Creates graph plotting many passwords in the dataset at the Levenshtein
+            distance away from the center"""
         your_pw = entry_pw.get()
-        passwords_quick.distance_from_list(your_pw)
-        # Initialize plot
-        output_file("lev_graph.html")
-        plot = figure(width = 700, height = 700, title = 'Levenshtein distance: ' + your_pw,
-                      tools = "resize, hover, wheel_zoom, box_zoom, reset, save")
-        hover_pass = []
-        hover_lev = []
-        colors = []
-        x = []
-        y = []
-        for pw in passwords_quick.dist:
-            # For hovering
-            hover_pass.append(pw)
-            hover_lev.append(passwords_quick.dist[pw])
-            # Convert to polar
-            r = passwords_quick.dist[pw]
-            theta = randint(0, 360)
-            x.append(r * cos(theta))
-            y.append(r * sin(theta))
-            colors.append(('#ff3366'))
-        # Create data source for hovering
-        source = ColumnDataSource(data= dict(
-            hover_pass = hover_pass,
-            hover_lev = hover_lev,
-            color = colors))
-        # Graph data
-        plot.circle(x, y, alpha = .5, source = source, color = colors)
-        plot.select(dict(type = HoverTool)).tooltips = {"Levenshtein Distance":"@hover_lev",
-                                                        "Password":"@hover_pass"}
-        show(plot)
+        g2 = DotGraph('lev_graph.html','Levenshtein Distance: ' + your_pw)
+        g2.do_type_Lev(your_pw)
+        show(g2.plot)
 
 
 if __name__ == '__main__':
