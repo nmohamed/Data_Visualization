@@ -11,7 +11,6 @@ import string
 import heapq
 import operator
 import numpy as np
-import matplotlib.pyplot as plt
 from Levenshtein import distance
 import re
 
